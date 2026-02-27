@@ -8,5 +8,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="img"/>
 	<classpathentry kind="src" path="data"/>
+	<classpathentry kind="src" path="database"/>
+	<classpathentry kind="lib" path="C:/Users/AdminPoi/Downloads/flatlaf-3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
