@@ -9,6 +9,9 @@
 	<classpathentry kind="src" path="img"/>
 	<classpathentry kind="src" path="data"/>
 	<classpathentry kind="src" path="database"/>
-	<classpathentry kind="lib" path="C:/Users/AdminPoi/Downloads/flatlaf-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/flatlaf-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/flatlaf-extras-3.7.jar"/>
+	<classpathentry kind="lib" path="lib/jsvg-2.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/mssql-jdbc-13.2.1.jre11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
