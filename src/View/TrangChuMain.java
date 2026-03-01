@@ -12,6 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -24,20 +27,37 @@ public class TrangChuMain extends JFrame {
 	private JButton btnThongTinCaNhan;
 	private JTabbedPane mainTabs;
 	private JPanel panelBtnThongTinCaNhan;
+	private JMenuBar menuBar;
+	private TrangChuGUI trangChuGUI;
+	private JMenu menuCaiDat;
+	private JMenu menuChucNag;
+	private JMenu menuAbout;
+	private JMenuItem itemInfo;
+	private JMenuItem itemHelp;
+	private JMenuItem itemContact;
+	private JMenuItem itemThoat;
+	private JMenuItem itemCaiDatTaiKhoan;
+	private JMenuItem itemChinhGiaoDienSang;
+	private JMenuItem itemChinhGiaoDienToi;
+	private JMenuItem itemZoomIn;
+	private JMenuItem itemZoomOut;
 
 	public TrangChuMain() {
-		setTitle("Nhân Viên Quản Lý");
 		// đặt size chuẩn trước
-		setSize(1400, 850);
+		setSize(1400, 870);
 		// sau đó mới maximize
+		createGUI();
+		CreateMenuBar();
+		
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		createGUI();
+
 		
 		// khai báo controller bên trong đây
 		new Controller.TrangChuMainController(this);
 	}
+	
 
 	public void createGUI() {
 		JPanel panelMain = new JPanel();
@@ -56,7 +76,6 @@ public class TrangChuMain extends JFrame {
 			    "<html><div style='text-align:center;'>"
 			    + "<p>Hệ Thống Quản Lý Bán Coffee</p>"
 			    + "<p>Chất lượng tạo nên thương hiệu</p>"
-			    + "<p><i>Dự án được thiết kế bởi Nguyễn Minh Phúc - 22637001</i></p>"
 			    + "</div></html>"
 			);
 		lblTitle.setHorizontalAlignment(JLabel.CENTER); // Tăng kích thước font
@@ -100,10 +119,13 @@ public class TrangChuMain extends JFrame {
 		mainTabs.putClientProperty("JTabbedPane.tabAreaAlignment", "leading");
 		mainTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		// ================= Trang Chủ =================
-		JPanel panelTrangChu = new JPanel();
-		panelTrangChu.add(new JLabel("Nội dung Trang Chủ"));
-		mainTabs.addTab("Trang Chủ", new FlatSVGIcon("home.svg", 22, 22), panelTrangChu);
-		panelTrangChu.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		trangChuGUI = new TrangChuGUI();
+		mainTabs.addTab("Trang Chủ", new FlatSVGIcon("home.svg", 22, 22), trangChuGUI);
+		trangChuGUI.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		// Khởi tạo controller cho TrangChuGUI
+		new Controller.TrangChuController(trangChuGUI);
 
 		// ================= BÁN HÀNG =================
 		JPanel panelBanHang = new JPanel(new BorderLayout());
@@ -138,11 +160,33 @@ public class TrangChuMain extends JFrame {
 		mainTabs.addTab("Hóa Đơn", new FlatSVGIcon("bill.svg", 22, 22), panelHoaDon);
 
 
-		// ================= Danh Mục =================
-		JPanel panelDanhMuc = new JPanel();
-		panelDanhMuc.add(new JLabel("Nội dung Danh Mục"));
-		mainTabs.addTab("Danh Mục", new FlatSVGIcon("Danhmuc.svg", 22, 22), panelDanhMuc);
+		// ================= DANH MỤC =================
+		JPanel panelDanhMuc = new JPanel(new BorderLayout());
 
+		// Tạo tab con
+		JTabbedPane danhMucTabs = new JTabbedPane();
+		danhMucTabs.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		danhMucTabs.putClientProperty("JTabbedPane.tabHeight", 45);
+
+		// ===== Tab Sản Phẩm =====
+		JPanel panelSanPham = new JPanel();
+		panelSanPham.add(new JLabel("Quản lý Sản Phẩm tại đây"));
+
+		danhMucTabs.addTab("Sản Phẩm", panelSanPham);
+
+		// ===== Tab Voucher =====
+		JPanel panelVoucher = new JPanel();
+		panelVoucher.add(new JLabel("Quản lý Voucher tại đây"));
+
+		danhMucTabs.addTab("Voucher", panelVoucher);
+
+		// Add tab con vào panel cha
+		panelDanhMuc.add(danhMucTabs, BorderLayout.CENTER);
+
+		// Add vào sidebar
+		mainTabs.addTab("Danh Mục", 
+		        new FlatSVGIcon("Danhmuc.svg", 22, 22), 
+		        panelDanhMuc);
 
 		// ================= Menu =================
 		JPanel panelMenu = new JPanel();
@@ -178,18 +222,207 @@ public class TrangChuMain extends JFrame {
 		
 		// ===== Add vào CENTER =====
 		// 1️⃣ Tạo JScrollPane chứa tab
-		JScrollPane scrollTabs = new JScrollPane(mainTabs);
-
-		// 2️⃣ Chỉ cho scroll theo chiều dọc
-		scrollTabs.setVerticalScrollBarPolicy(
-		        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollTabs.setHorizontalScrollBarPolicy(
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-		// 4️⃣ Đặt vào WEST (không đặt CENTER)
-		panelMain.add(scrollTabs, BorderLayout.CENTER);
+//		JScrollPane scrollTabs = new JScrollPane(mainTabs);
+//
+//		// 2️⃣ Chỉ cho scroll theo chiều dọc
+//		scrollTabs.setVerticalScrollBarPolicy(
+//		        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//		scrollTabs.setHorizontalScrollBarPolicy(
+//				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		panelCenter.setLayout(new BorderLayout());
 		
+		panelCenter.add(mainTabs, BorderLayout.CENTER);
+		// 4️⃣ Đặt vào WEST (không đặt CENTER)
+		panelMain.add(panelCenter, BorderLayout.CENTER);
+		
+		
+		// ================= PANEL SOUTH - THÔNG TIN BẢN QUYỀN =================
+		JPanel panelSouth = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+		JLabel lblCopyright = new JLabel(
+			    "© 2024 Nguyễn Minh Phúc - 22637001. All rights reserved."
+			);
+		lblCopyright.setFont(new Font("Arial", Font.PLAIN, 12));
+		panelSouth.add(lblCopyright);
+		panelMain.add(panelSouth, BorderLayout.SOUTH);
+		
+		panelCenter.setBorder(BorderFactory.createLineBorder( new java.awt.Color(200, 200, 200), 1));
 		
 	}
+	
+	public void CreateMenuBar() {
+	    menuBar = new JMenuBar();
+
+	    // Menu "About"
+	    menuAbout = new JMenu("About");
+	    menuAbout.setFont(new Font("Arial", Font.BOLD, 14));
+	    itemInfo = new JMenuItem("Thông tin");
+	    itemHelp = new JMenuItem("Hướng dẫn sử dụng");
+	    itemContact = new JMenuItem("Liên hệ hỗ trợ");
+	    itemThoat = new JMenuItem("Thoát");
+	    
+	    menuAbout.add(itemInfo);
+	    menuAbout.add(itemHelp);
+	    menuAbout.add(itemContact);
+	    menuAbout.addSeparator(); // Thêm đường phân cách
+	    menuAbout.add(itemThoat);
+	    // Menu "Cài Đặt"
+	    menuCaiDat = new JMenu("Cài Đặt");
+	    menuCaiDat.setFont(new Font("Arial", Font.BOLD, 14));
+	    itemCaiDatTaiKhoan = new JMenuItem("Cài Đặt Tài Khoản");
+	    itemChinhGiaoDienSang = new JMenuItem("Chỉnh Giao Diện Sáng");
+	    itemChinhGiaoDienToi = new JMenuItem("Chỉnh Giao Diện Tối");
+	    menuCaiDat.add(itemCaiDatTaiKhoan);
+	    menuCaiDat.add(itemChinhGiaoDienSang);
+	    menuCaiDat.add(itemChinhGiaoDienToi);
+	    
+	    // Zoom
+	    JMenu menuZoom = new JMenu("Zoom");
+	    menuZoom.setFont(new Font("Arial", Font.BOLD, 14));
+	    itemZoomIn = new JMenuItem("Zoom In");
+	    itemZoomOut = new JMenuItem("Zoom Out");
+	    menuZoom.add(itemZoomIn);
+	    menuZoom.add(itemZoomOut);
+	    
+	    
+	    // menubar add
+	    menuBar.add(menuZoom);
+	    menuBar.add(menuCaiDat);
+	    menuBar.add(menuAbout);
+
+	    setJMenuBar(menuBar);
+	    
+	}
+
+
+	public JButton getBtnThongTinCaNhan() {
+		return btnThongTinCaNhan;
+	}
+
+
+	public void setBtnThongTinCaNhan(JButton btnThongTinCaNhan) {
+		this.btnThongTinCaNhan = btnThongTinCaNhan;
+	}
+
+
+
+	public JMenu getMenuCaiDat() {
+		return menuCaiDat;
+	}
+
+
+	public void setMenuCaiDat(JMenu menuCaiDat) {
+		this.menuCaiDat = menuCaiDat;
+	}
+
+
+	public JMenu getMenuChucNag() {
+		return menuChucNag;
+	}
+
+
+	public void setMenuChucNag(JMenu menuChucNag) {
+		this.menuChucNag = menuChucNag;
+	}
+
+
+	public JMenu getMenuAbout() {
+		return menuAbout;
+	}
+
+
+	public void setMenuAbout(JMenu menuAbout) {
+		this.menuAbout = menuAbout;
+	}
+
+
+	public JMenuItem getItemInfo() {
+		return itemInfo;
+	}
+
+
+	public void setItemInfo(JMenuItem itemInfo) {
+		this.itemInfo = itemInfo;
+	}
+
+
+	public JMenuItem getItemHelp() {
+		return itemHelp;
+	}
+
+
+	public void setItemHelp(JMenuItem itemHelp) {
+		this.itemHelp = itemHelp;
+	}
+
+
+	public JMenuItem getItemContact() {
+		return itemContact;
+	}
+
+
+	public void setItemContact(JMenuItem itemContact) {
+		this.itemContact = itemContact;
+	}
+
+
+	public JMenuItem getItemThoat() {
+		return itemThoat;
+	}
+
+
+	public void setItemThoat(JMenuItem itemThoat) {
+		this.itemThoat = itemThoat;
+	}
+
+
+	public JMenuItem getItemCaiDatTaiKhoan() {
+		return itemCaiDatTaiKhoan;
+	}
+
+
+	public void setItemCaiDatTaiKhoan(JMenuItem itemCaiDatTaiKhoan) {
+		this.itemCaiDatTaiKhoan = itemCaiDatTaiKhoan;
+	}
+
+
+	public JMenuItem getItemChinhGiaoDienSang() {
+		return itemChinhGiaoDienSang;
+	}
+
+
+	public void setItemChinhGiaoDienSang(JMenuItem itemChinhGiaoDienSang) {
+		this.itemChinhGiaoDienSang = itemChinhGiaoDienSang;
+	}
+
+
+	public JMenuItem getItemChinhGiaoDienToi() {
+		return itemChinhGiaoDienToi;
+	}
+
+
+	public void setItemChinhGiaoDienToi(JMenuItem itemChinhGiaoDienToi) {
+		this.itemChinhGiaoDienToi = itemChinhGiaoDienToi;
+	}
+
+
+	public JMenuItem getItemZoomIn() {
+		return itemZoomIn;
+	}
+
+
+	public void setItemZoomIn(JMenuItem itemZoomIn) {
+		this.itemZoomIn = itemZoomIn;
+	}
+
+
+	public JMenuItem getItemZoomOut() {
+		return itemZoomOut;
+	}
+
+
+	public void setItemZoomOut(JMenuItem itemZoomOut) {
+		this.itemZoomOut = itemZoomOut;
+	}
+	
 
 }
