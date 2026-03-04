@@ -13,7 +13,7 @@ public class ConnectDB {
     }
 
     public void connect() throws SQLException {
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=quanlyquancafe_db;encrypt=true;trustServerCertificate=true";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=CoffeeManagement;encrypt=true;trustServerCertificate=true";
         String user = "sa";
         String password = "sapassword";
         con = DriverManager.getConnection(url, user, password);

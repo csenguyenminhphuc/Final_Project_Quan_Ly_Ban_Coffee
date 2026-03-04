@@ -402,4 +402,28 @@ public class DangNhapMain extends JFrame{
 		this.btnNutQuenMatKhau = btnNutQuenMatKhau;
 	}
 
+	public JTextField getTxtUsernameQuenMatKhau() {
+		return txtUsernameQuenMatKhau;
+	}
+
+	public void setTxtUsernameQuenMatKhau(JTextField txtUsernameQuenMatKhau) {
+		this.txtUsernameQuenMatKhau = txtUsernameQuenMatKhau;
+	}
+
+	public JTextField getTxtMaNhanVien() {
+		return txtMaNhanVien;
+	}
+
+	public void setTxtMaNhanVien(JTextField txtMaNhanVien) {
+		this.txtMaNhanVien = txtMaNhanVien;
+	}
+
+	public JTextField getTxtNamSinhNhanVien() {
+		return txtNamSinhNhanVien;
+	}
+
+	public void setTxtNamSinhNhanVien(JTextField txtNamSinhNhanVien) {
+		this.txtNamSinhNhanVien = txtNamSinhNhanVien;
+	}
+
 }
