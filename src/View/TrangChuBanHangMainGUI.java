@@ -18,10 +18,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import View.BanHang.TrangChuBanHangGUI;
+import View.QuanLy.TrangChuQuanLyGUI;
 
 public class TrangChuBanHangMainGUI extends JFrame {
 	private JPanel panelCenter;
@@ -30,6 +35,7 @@ public class TrangChuBanHangMainGUI extends JFrame {
 	private JTabbedPane mainTabs;
 	private JPanel panelBtnThongTinCaNhan;
 	private JMenuBar menuBar;
+	private TrangChuQuanLyGUI trangChuQuanLyGUI;
 	private TrangChuBanHangGUI trangChuBanHangGUI;
 	private JMenu menuCaiDat;
 	private JMenu menuChucNag;
@@ -43,6 +49,7 @@ public class TrangChuBanHangMainGUI extends JFrame {
 	private JMenuItem itemChinhGiaoDienToi;
 	private JMenuItem itemZoomIn;
 	private JMenuItem itemZoomOut;
+	private JMenuItem itemDangXuat;
 
 	public TrangChuBanHangMainGUI() {
 		// đặt size chuẩn trước
@@ -122,35 +129,16 @@ public class TrangChuBanHangMainGUI extends JFrame {
 		mainTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		// ================= Trang Chủ =================
 		
-		trangChuBanHangGUI = new TrangChuBanHangGUI();
-		mainTabs.addTab("Trang Chủ", new FlatSVGIcon("home.svg", 22, 22), trangChuBanHangGUI);
-		trangChuBanHangGUI.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		trangChuQuanLyGUI = new TrangChuQuanLyGUI();
+		mainTabs.addTab("Trang Chủ", new FlatSVGIcon("home.svg", 22, 22), trangChuQuanLyGUI);
+		trangChuQuanLyGUI.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		// Khởi tạo controller cho TrangChuGUI
+		new Controller.QuanLy.TrangChuQuanLyController(trangChuQuanLyGUI);
 
 		// ================= BÁN HÀNG =================
-		JPanel panelBanHang = new JPanel(new BorderLayout());
-		panelBanHang.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		// ===== Tab con sản phẩm =====
-		JTabbedPane productTabs = new JTabbedPane();
-		productTabs.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		productTabs.putClientProperty("JTabbedPane.tabHeight", 45);
-		
-		productTabs.addTab("Tất cả sản phẩm", new JPanel());
-		productTabs.addTab("Coffee", new JPanel());
-		productTabs.addTab("Đá Xay", new JPanel());
-		productTabs.addTab("Trà Trái Cây", new JPanel());
-		productTabs.addTab("Trà Sữa", new JPanel());
-		
-		// ===== Panel thanh toán bên phải =====
-		JPanel panelThanhToan = new JPanel();
-		panelThanhToan.setPreferredSize(new java.awt.Dimension(550, 0));
-		panelThanhToan.setBorder(BorderFactory.createTitledBorder("Thanh Toán"));
-		panelThanhToan.add(new JLabel("Giỏ hàng / Thanh toán tại đây"));
-
-		// ===== Ghép lại =====
-		panelBanHang.add(productTabs, BorderLayout.CENTER);
-		panelBanHang.add(panelThanhToan, BorderLayout.EAST);
-
-		mainTabs.addTab("Bán Hàng", new FlatSVGIcon("Banhang.svg", 22, 22), panelBanHang);
+		trangChuBanHangGUI = new TrangChuBanHangGUI();
+		mainTabs.addTab("Bán Hàng", new FlatSVGIcon("Banhang.svg", 22, 22), trangChuBanHangGUI);
 
 
 		// ================= Hóa Đơn =================
@@ -200,24 +188,24 @@ public class TrangChuBanHangMainGUI extends JFrame {
 
 
 		// ================= Nhân Viên =================
-//		JPanel panelNhanVien = new JPanel();
-//		panelNhanVien.add(new JLabel("Nội dung Nhân Viên"));
-//		//mainTabs.addTab("Nhân Viên", new FlatSVGIcon("Nhanvien.svg", 22, 22), panelNhanVien);
+		JPanel panelNhanVien = new JPanel();
+		panelNhanVien.add(new JLabel("Nội dung Nhân Viên"));
+		//mainTabs.addTab("Nhân Viên", new FlatSVGIcon("Nhanvien.svg", 22, 22), panelNhanVien);
 
 
 		// ================= Thống Kê =================
-//		JPanel panelThongKe = new JPanel();
-//		panelThongKe.add(new JLabel("Nội dung Thống Kê"));
-//		mainTabs.addTab("Thống Kê", new FlatSVGIcon("Thongke.svg", 22, 22), panelThongKe);
+		JPanel panelThongKe = new JPanel();
+		panelThongKe.add(new JLabel("Nội dung Thống Kê"));
+		//mainTabs.addTab("Thống Kê", new FlatSVGIcon("Thongke.svg", 22, 22), panelThongKe);
 		
 		// ================= Thống Kê =================
-//		JPanel panelAI = new JPanel();
-//		panelAI.add(new JLabel("Nội dung AI"));
-//		mainTabs.addTab("Chat AI", new FlatSVGIcon("AI.svg", 22, 22), panelAI);
+		JPanel panelAI = new JPanel();
+		panelAI.add(new JLabel("Nội dung AI"));
+		mainTabs.addTab("Chat AI", new FlatSVGIcon("AI.svg", 22, 22), panelAI);
 
-		// ================= Thoát =================
-		JPanel panelThoat = new JPanel();
-		mainTabs.addTab("Thoát", new FlatSVGIcon("logout.svg", 22, 22), panelThoat);
+		// ================= Đăng Xuất =================
+		JPanel panelDangXuat = new JPanel();
+		mainTabs.addTab("Đăng Xuất", new FlatSVGIcon("logout.svg", 22, 22), panelDangXuat);
 		
 		// ===== Add vào CENTER =====
 		// 1️⃣ Tạo JScrollPane chứa tab
@@ -257,11 +245,13 @@ public class TrangChuBanHangMainGUI extends JFrame {
 	    itemInfo = new JMenuItem("Thông tin");
 	    itemHelp = new JMenuItem("Hướng dẫn sử dụng");
 	    itemContact = new JMenuItem("Liên hệ hỗ trợ");
+	    itemDangXuat = new JMenuItem("Đăng Xuất");
 	    itemThoat = new JMenuItem("Thoát");
 	    
 	    menuAbout.add(itemInfo);
 	    menuAbout.add(itemHelp);
 	    menuAbout.add(itemContact);
+	    menuAbout.add(itemDangXuat);
 	    menuAbout.addSeparator(); // Thêm đường phân cách
 	    menuAbout.add(itemThoat);
 	    // Menu "Cài Đặt"
@@ -362,7 +352,13 @@ public class TrangChuBanHangMainGUI extends JFrame {
 	public void setItemContact(JMenuItem itemContact) {
 		this.itemContact = itemContact;
 	}
+	public JMenuItem getItemDangXuat() {
+		return itemDangXuat;
+	}
 
+	public void setItemDangXuat(JMenuItem itemDangXuat) {
+		this.itemDangXuat = itemDangXuat;
+	}
 
 	public JMenuItem getItemThoat() {
 		return itemThoat;
@@ -422,6 +418,57 @@ public class TrangChuBanHangMainGUI extends JFrame {
 	public void setItemZoomOut(JMenuItem itemZoomOut) {
 		this.itemZoomOut = itemZoomOut;
 	}
+	
+	/**
+	 * Lấy TrangChuQuanLyGUI để kết nối với các view khác
+	 */
+	public TrangChuQuanLyGUI getTrangChuQuanLyGUI() {
+		return trangChuQuanLyGUI;
+	}
+	
+	public JTabbedPane getMainTabs() {
+		return mainTabs;
+	}
+
+	public void setMainTabs(JTabbedPane mainTabs) {
+		this.mainTabs = mainTabs;
+	}
+	
+	
+	// ================= THEME =================
+	public void setLightTheme() {
+	    try {
+	        UIManager.setLookAndFeel(new FlatLightLaf());
+	        SwingUtilities.updateComponentTreeUI(this);
+	        this.repaint();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	public void setDarkTheme() {
+	    try {
+	        UIManager.setLookAndFeel(new FlatDarkLaf());
+	        SwingUtilities.updateComponentTreeUI(this);
+	        this.repaint();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public void zoomIn() {
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+	
+	public void zoomOut() {
+		
+		setExtendedState(JFrame.NORMAL);
+		setSize(1400, 870);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+	}
+	
+
 	
 	/**
 	 * Lấy TrangChuBanHangGUI để kết nối với các view khác

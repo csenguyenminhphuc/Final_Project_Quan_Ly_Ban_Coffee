@@ -233,6 +233,8 @@ public class DangNhapMain extends JFrame{
 		btnExit.setIcon(
 			    new FlatSVGIcon("logout.svg", 20, 20)
 		);
+		btnExit.setBorderPainted(false);      // bỏ viền
+		btnExit.setContentAreaFilled(false); 
 		btnExit.setHorizontalTextPosition(SwingConstants.LEFT);
 		panelThoat.add(lblhihi2);
 		panelThoat.add(btnExit);
@@ -311,6 +313,8 @@ public class DangNhapMain extends JFrame{
 		btnQuayLaiDangNhap.setForeground(Color.RED);
 		btnQuayLaiDangNhap.setPreferredSize(new Dimension(250, 40));
 		btnQuayLaiDangNhap.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		btnQuayLaiDangNhap.setBorderPainted(false);      // bỏ viền
+		btnQuayLaiDangNhap.setContentAreaFilled(false); 
 		btnQuayLaiDangNhap.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnQuayLaiDangNhap.setIcon(
 			    new FlatSVGIcon("back.svg", 25, 25)

@@ -1,6 +1,6 @@
 # ☕ Hệ Thống Quản Lý Quán Cà Phê
 
-## �‍💻 Tác giả
+## 💻 Tác giả
 
 **Nguyễn Minh Phúc**  
 DevSecOps Engineer | Infrastructure Engineer  
